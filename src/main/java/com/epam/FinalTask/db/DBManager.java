@@ -26,7 +26,7 @@ public class DBManager {
         Connection connection = null;
         try {
             Context initialContext = new InitialContext();
-            DataSource ds = (DataSource) initialContext.lookup("java:/comp/env/jdbc/ConPool");
+            DataSource ds = (DataSource) initialContext.lookup("java:comp/env/jdbc/hospital");
             connection = ds.getConnection();
         } catch (NamingException e) {
             //todo:addLogger

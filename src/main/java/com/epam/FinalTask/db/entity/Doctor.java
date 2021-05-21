@@ -2,6 +2,8 @@ package com.epam.FinalTask.db.entity;
 
 public class Doctor {
     private int id;
+    private String login;
+    private String password;
     private String first_name;
     private String last_name;
     private int age;
@@ -51,10 +53,29 @@ public class Doctor {
     public String toString() {
         return "Doctor{" +
                 "id=" + id +
+                ", login='" + login + '\'' +
+                ", password='" + password + '\'' +
                 ", first_name='" + first_name + '\'' +
                 ", last_name='" + last_name + '\'' +
                 ", age=" + age +
                 ", specialization='" + specialization + '\'' +
                 '}';
     }
+
+    public String getLogin() {
+        return login;
+    }
+
+    public void setLogin(String login) {
+        this.login = login;
+    }
+
+    public String getPassword() {
+        return password;
+    }
+
+    public void setPassword(String password) {
+        this.password = password;
+    }
+
 }

@@ -1,5 +1,5 @@
 <Context>
-    <Resource name="jdbc/ConPool"
+    <Resource name="jdbc/hospital"
               auth="Container"
               type="javax.sql.DataSource"
               maxActive="100" maxIdle="30" maxWait="10000"
@@ -7,6 +7,6 @@
               driverClassName="com.mysql.cj.jdbc.Driver"
               defaultAutoCommit="false"
               defaultTransactionIsolation="READ_COMMITTED"
-              url="jdbc:mysql://localhost:3306/hospital"/>
+              url="jdbc:mysql://localhost:3306/hospital?serverTimezone=UTC"/>
 
 </Context>
