@@ -7,7 +7,7 @@
           integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
 </head>
 <body>
-
+<jsp:useBean id="specializationDAO" class="com.epam.FinalTask.db.dao.SpecializationDAO" scope="session"/>
 <%@ include file="/WEB-INF/jspf/header.jspf" %>
 
 <c:choose>

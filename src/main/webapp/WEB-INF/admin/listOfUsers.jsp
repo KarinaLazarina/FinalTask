@@ -8,9 +8,9 @@
 
 </head>
 <body>
-<%@ include file="/WEB-INF/jspf/header.jspf" %>
 
 <jsp:useBean id="specializationDAO" class="com.epam.FinalTask.db.dao.SpecializationDAO" scope="session"/>
+<%@ include file="/WEB-INF/jspf/header.jspf" %>
 
 <c:choose>
     <c:when test="${userName == 'nurse'}">

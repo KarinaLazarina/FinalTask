@@ -9,6 +9,7 @@
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt" %>
 
+<jsp:useBean id="specializationDAO" class="com.epam.FinalTask.db.dao.SpecializationDAO" scope="session"/>
 <%@ include file="/WEB-INF/jspf/header.jspf" %>
 
 <c:choose>
@@ -23,7 +24,6 @@
     </c:when>
 </c:choose>
 
-<jsp:useBean id="specializationDAO" class="com.epam.FinalTask.db.dao.SpecializationDAO" scope="session"/>
 
 <form action="controller" method="post" class="d-flex align-items-center flex-column justify-content-center">
     <div class="form-group">
