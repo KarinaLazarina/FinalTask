@@ -12,9 +12,9 @@ import javax.servlet.http.HttpSession;
 import java.io.IOException;
 
 public class LoginCommand implements Command {
-//    private static final String pathToDoctorPage = "/WEB-INF/admin/listOfDoctors.jsp";
+//    private static final String pathToDoctorPage = "/WEB-INF/admin/listOfUsers.jsp";
     private static final String pathToHomePage = "/controller?command=showHomePage";
-//    private static final String pathToNursePage = "/WEB-INF/admin/listOfDoctors.jsp";
+//    private static final String pathToNursePage = "/WEB-INF/admin/listOfUsers.jsp";
     private static final String pathToErrorPage = "/WEB-INF/errorPage.jsp";
 
     @Override
@@ -45,7 +45,7 @@ public class LoginCommand implements Command {
             return pathToErrorPage;
         } else {
             configureSession(session, user);
-            Role userRole = user.getRole();
+            Role userRole = Role.fromValue(user.getRole_id());
             return pathToHomePage;
 
 //            if (userRole == Role.ADMIN)
@@ -74,6 +74,6 @@ public class LoginCommand implements Command {
 
     private void configureSession(HttpSession session, User user){
         session.setAttribute("user", user);
-        session.setAttribute("userRole", user.getRole());
+        session.setAttribute("userRole", Role.fromValue(user.getRole_id()).toString().toLowerCase());
     }
 }

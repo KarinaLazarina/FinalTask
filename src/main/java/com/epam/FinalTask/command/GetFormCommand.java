@@ -7,13 +7,13 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 
-public class ShowHomePageCommand implements Command {
-    private static final String pathToPage = "/WEB-INF/homePage.jsp";
-    private static final String pathToLoginPage = "/";
+public class GetFormCommand implements Command {
+    private static final String pathToForm = "/WEB-INF/admin/addUser.jsp";
 
     @Override
     public String execute(HttpServletRequest request, HttpServletResponse response) throws IOException, ServletException {
-        if(request.getSession().getAttribute("userRole") == null) return  pathToLoginPage;
-        return pathToPage;
+        String role = request.getParameter("addRole");
+        request.setAttribute("addRole", role);
+        return pathToForm;
     }
 }

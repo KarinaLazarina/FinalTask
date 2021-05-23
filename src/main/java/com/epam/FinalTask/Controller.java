@@ -1,8 +1,5 @@
 package com.epam.FinalTask;
 
-import com.epam.FinalTask.db.dao.DoctorDao;
-import com.epam.FinalTask.db.entity.Doctor;
-
 import java.io.*;
 import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;

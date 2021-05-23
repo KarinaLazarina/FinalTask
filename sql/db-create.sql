@@ -2,34 +2,31 @@ DROP DATABASE IF EXISTS Hospital;
 CREATE DATABASE IF NOT EXISTS Hospital;
 use Hospital;
 
-# CREATE TABLE doctor
-# (
-#     id    INT PRIMARY KEY AUTO_INCREMENT,
-#     first_name VARCHAR(25),
-#     last_name VARCHAR(25),
-#     age INT,
-#     specialization VARCHAR (25)
-# );
-CREATE TABLE user
+CREATE TABLE role
 (
-    id                    INT PRIMARY KEY AUTO_INCREMENT,
-    login                 VARCHAR(25) UNIQUE,
-    password              VARCHAR(25),
-    first_name            VARCHAR(25),
-    last_name             VARCHAR(25),
-    age                   INT,
-    role                  ENUM ('admin', 'doctor', 'nurse'),
-    doctor_specialization VARCHAR(25)
-
-#     FOREIGN KEY (doctor_description_id) REFERENCES doctor_description (id)
+    id   INT PRIMARY KEY AUTO_INCREMENT,
+    name VARCHAR(10)
+);
+CREATE TABLE specialization
+(
+    id             INT PRIMARY KEY AUTO_INCREMENT,
+    specialization VARCHAR(25) UNIQUE
 );
 
-# CREATE TABLE doctor_description
-# (
-#     id             INT PRIMARY KEY AUTO_INCREMENT,
-#     specialization VARCHAR(25),
-#     phone_number   VARCHAR(10)
-# );
+CREATE TABLE user
+(
+    id                       INT PRIMARY KEY AUTO_INCREMENT,
+    login                    VARCHAR(25) UNIQUE,
+    password                 VARCHAR(25),
+    first_name               VARCHAR(25),
+    last_name                VARCHAR(25),
+    age                      INT,
+    role_id                  INT,
+    doctor_specialization_id INT,
+
+    FOREIGN KEY (role_id) REFERENCES role (id),
+    FOREIGN KEY (doctor_specialization_id) REFERENCES specialization (id)
+);
 
 CREATE TABLE patient
 (
@@ -48,6 +45,7 @@ CREATE TABLE diagnosis
     id                INT PRIMARY KEY AUTO_INCREMENT,
     patient_id        INT,
     name_of_diagnosis VARCHAR(50),
+    date              DATE,
 
     FOREIGN KEY (patient_id) REFERENCES patient (id)
 );
@@ -66,17 +64,39 @@ CREATE TABLE prescription
     FOREIGN KEY (patient_id) REFERENCES patient (id) ON DELETE CASCADE
 );
 
-INSERT INTO user(login, password, role, first_name, last_name)
-VALUES ('admin', '123', 'admin', 'admin', 'admin');
+INSERT INTO role(name)
+VALUES ('admin'),
+       ('doctor'),
+       ('nurse');
 
-INSERT INTO user(login, password, role, first_name, last_name, age, doctor_specialization)
-VALUES ('doctor1', '123', 'doctor', 'Tom', 'Marks', 35, 'pediatrician');
+INSERT INTO specialization(specialization)
+VALUES ('surgeon'),
+       ('pediatrician'),
+       ('therapist'),
+       ('dermatologist'),
+       ('ophthalmologist');
 
-INSERT INTO user(login, password, role, first_name, last_name, age, doctor_specialization)
-VALUES ('doctor2', '123', 'doctor', 'Marry', 'Smith', 40, 'surgeon');
+INSERT INTO user(login, password, role_id, first_name, last_name)
+VALUES ('admin', '123', 1, 'admin', 'admin');
+
+INSERT INTO user(login, password, role_id, first_name, last_name, age, doctor_specialization_id)
+VALUES ('doctor1', '123', 2, 'Tom', 'Marks', 35, 2);
+
+INSERT INTO user(login, password, role_id, first_name, last_name, age, doctor_specialization_id)
+VALUES ('doctor2', '123', 2, 'Marry', 'Smith', 40, 1);
 
 INSERT INTO patient(first_name, last_name, date_of_birth, doctor_id, status)
-VALUES ('Ann', 'Snow', '2015-02-patient10', 2, 'awaiting appointment');
+VALUES ('Ann', 'Snow', '2015-02-10', 2, 'awaiting appointment');
+
+CREATE
+    TRIGGER date_of_diagnosis
+    AFTER INSERT
+    ON diagnosis
+    FOR EACH ROW
+BEGIN
+    SET NEW.date = NOW();
+END;
+
 
 INSERT INTO diagnosis(patient_id, name_of_diagnosis)
 VALUES (1, 'cold');

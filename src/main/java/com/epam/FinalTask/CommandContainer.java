@@ -1,8 +1,6 @@
 package com.epam.FinalTask;
 
-import com.epam.FinalTask.command.DoctorListCommand;
-import com.epam.FinalTask.command.LoginCommand;
-import com.epam.FinalTask.command.ShowHomePageCommand;
+import com.epam.FinalTask.command.*;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -14,7 +12,9 @@ public class CommandContainer {
         commands = new HashMap<>();
         commands.put("login", new LoginCommand());
         commands.put("showHomePage", new ShowHomePageCommand());
-        commands.put("doctorCommand", new DoctorListCommand());
+        commands.put("addUser", new AddUserCommand());
+        commands.put("getForm", new GetFormCommand());
+        commands.put("getUsers", new GetUsersCommand());
 
     }
 
