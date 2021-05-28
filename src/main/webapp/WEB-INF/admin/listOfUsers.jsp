@@ -9,7 +9,6 @@
 </head>
 <body>
 
-<jsp:useBean id="specializationDAO" class="com.epam.FinalTask.db.dao.SpecializationDAO" scope="session"/>
 <%@ include file="/WEB-INF/jspf/header.jspf" %>
 
 <c:choose>
@@ -20,6 +19,9 @@
         <h1>Doctors:</h1>
     </c:when>
 </c:choose>
+<c:if test="${users.size() == 0}">
+    <p>There are no doctors of this specialty yet</p>
+</c:if>
     <c:forEach var="user" items="${users}">
         <div class="card mb-3" style="width: 18rem; display: inline-block;">
                 <%--        <img class="card-img-top" src=".../100px180/?text=Image cap" alt="Card image cap">--%>
@@ -29,13 +31,13 @@
             </div>
             <ul class="list-group list-group-flush">
                 <c:if test="${userName == 'doctor'}">
-                    <li class="list-group-item">Specialization: ${specializationDAO.getSpecializationById(user.specialization_id)}</li>
+                    <li class="list-group-item">Specialization: ${specializations[user.specialization_id]}</li>
                 </c:if>
                 <li class="list-group-item">Age: ${user.age}</li>
                 <li class="list-group-item">Login: ${user.login}</li>
             </ul>
             <div class="card-body">
-                <a href="#" class="card-link">Card link</a>
+                <a href="/controller?command=getEditForm&editRole=${userName}&userId=${user.id}" class="card-link">Edit</a>
                 <a href="#" class="card-link">Another link</a>
             </div>
         </div>

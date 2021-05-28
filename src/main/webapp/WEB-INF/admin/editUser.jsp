@@ -11,67 +11,67 @@
 
 <%@ include file="/WEB-INF/jspf/header.jspf" %>
 
-<c:choose>
-    <c:when test="${addRole == 'admin' }">
-        <h1 class="display-3">Add new admin</h1>
-    </c:when>
-    <c:when test="${addRole == 'nurse' }">
-        <h1 class="display-3">Add new nurse</h1>
-    </c:when>
-    <c:when test="${addRole == 'doctor' }">
-        <h1 class="display-3">Add new doctor</h1>
-    </c:when>
-</c:choose>
+<%--<c:choose>--%>
+<%--    <c:when test="${addRole == 'admin' }">--%>
+<%--        <h1 class="display-3">Add new admin</h1>--%>
+<%--    </c:when>--%>
+<%--    <c:when test="${addRole == 'nurse' }">--%>
+<%--        <h1 class="display-3">Add new nurse</h1>--%>
+<%--    </c:when>--%>
+<%--    <c:when test="${addRole == 'doctor' }">--%>
+<%--        <h1 class="display-3">Add new doctor</h1>--%>
+<%--    </c:when>--%>
+<%--</c:choose>--%>
 
-<c:if test="${userAdded != null}">
-    <p>${userAdded}</p>
-</c:if>
 <form action="controller" method="post" class="d-flex align-items-center flex-column justify-content-center">
     <div class="form-group">
-        <input type="hidden" name="command" value="addUser"/>
+        <input type="hidden" name="command" value="editUser"/>
+    </div>
+    <div class="form-group">
+        <input type="hidden" name="id" value="${user.id}"/>
     </div>
     <div class="form-group">
         <label for="first_name">First Name</label>
-        <input type="text" class="form-control" id="first_name" placeholder="First Name" name="first_name">
+        <input type="text" class="form-control" id="first_name" value="${user.first_name}" name="first_name">
         <c:if test="${errors.first_name_error != null}">
             <small class="form-text text-muted">${errors.first_name_error}</small>
         </c:if>
     </div>
     <div class="form-group">
         <label for="last_name">Last Name</label>
-        <input type="text" class="form-control" id="last_name" placeholder="Last Name" name="last_name">
+        <input type="text" class="form-control" id="last_name" value="${user.last_name}" name="last_name">
         <c:if test="${errors.last_name_error != null}">
             <small class="form-text text-muted">${errors.last_name_error}</small>
         </c:if>
     </div>
     <div class="form-group">
         <label for="age">Age</label>
-        <input type="text" class="form-control" id="age" placeholder="Age" name="age">
+        <input type="text" class="form-control" id="age" value="${user.age}" name="age">
         <c:if test="${errors.age_error != null}">
             <small class="form-text text-muted">${errors.age_error}</small>
         </c:if>
     </div>
     <div class="form-group">
         <label for="exampleInputEmail1">Login</label>
-        <input type="text" class="form-control" id="exampleInputEmail1" placeholder="Enter login" name="login">
+        <input type="text" class="form-control" id="exampleInputEmail1" value="${user.login}" name="login">
         <c:if test="${errors.login_error != null}">
             <small class="form-text text-muted">${errors.login_error}</small>
         </c:if>
     </div>
-    <div class="form-group">
-        <label for="exampleInputPassword1">Password</label>
-        <input type="password" class="form-control" id="exampleInputPassword1" placeholder="Password" name="password">
-        <c:if test="${errors.password_error != null}">
-            <small class="form-text text-muted">${errors.password_error}</small>
-        </c:if>
-    </div>
+    <%--    <div class="form-group">--%>
+    <%--        <label for="exampleInputPassword1">Password</label>--%>
+    <%--        <input type="password" class="form-control" id="exampleInputPassword1" placeholder="Password" name="password">--%>
+    <%--        <c:if test="${errors.password_error != null}">--%>
+    <%--            <small class="form-text text-muted">${errors.password_error}</small>--%>
+    <%--        </c:if>--%>
+    <%--    </div>--%>
     <c:choose>
-        <c:when test="${addRole == 'admin' }">
+        <c:when test="${editRole == 'admin' }">
             <div class="form-group">
                 <input type="hidden" name="role_id" value="1"/>
             </div>
         </c:when>
-        <c:when test="${addRole == 'nurse' }">
+        <c:when test="${editRole == 'nurse' }">
             <div class="form-group">
                 <input type="hidden" name="role_id" value="3"/>
             </div>
@@ -79,26 +79,29 @@
                 <input type="hidden" name="specialization_id"/>
             </div>
         </c:when>
-        <c:when test="${addRole == 'doctor' }">
+        <c:when test="${editRole == 'doctor' }">
             <div class="form-group">
                 <input type="hidden" name="role_id" value="2"/>
             </div>
-            <%--            <div class="form-group">--%>
-            <%--                <label for="specialization">Specialization</label>--%>
-            <%--                <input type="text" class="form-control" id="specialization" placeholder="Specialization"--%>
-            <%--                       name="specialization">--%>
-            <%--            </div>--%>
             <div class="form-group">
                 <label for="specialization">Specialization</label>
-                <select class="form-control" id="specialization" name="specialization">
+<%--                <select class="form-control" id="specialization" name="specialization">--%>
                     <c:forEach var="specialization" items="${specializations}">
-                        <option>${specialization.value}</option>
+                        <c:choose>
+                            <c:when test="${user.specialization_id == specialization.key }">
+                                <input disabled type="text" class="form-control" id="specialization" value="${specialization.value}" name="login">
+                                <%--                                <option selected> ${specialization.value} </option>--%>
+                            </c:when>
+<%--                            <c:when test="${user.specialization_id != specialization.key  }">--%>
+<%--                                <option>${specialization.value}</option>--%>
+<%--                            </c:when>--%>
+                        </c:choose>
                     </c:forEach>
-                </select>
+<%--                </select>--%>
             </div>
         </c:when>
     </c:choose>
-    <button type="submit" class="btn btn-primary">Add</button>
+    <button type="submit" class="btn btn-primary">Edit</button>
 </form>
 <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js"
         integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN"

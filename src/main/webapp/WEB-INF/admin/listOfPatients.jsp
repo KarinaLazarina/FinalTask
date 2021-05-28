@@ -1,5 +1,4 @@
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
-<%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 <html>
 <head>
     <title>Title</title>
@@ -8,24 +7,26 @@
 </head>
 <body>
 <%@ include file="/WEB-INF/jspf/header.jspf" %>
+<jsp:useBean id="userDAO" class="com.epam.FinalTask.db.dao.UserDao" scope="session"/>
 
-<c:choose>
+<h1>Patients:</h1>
+<c:forEach var="patient" items="${patients}">
+    <div class="card mb-3" style="width: 18rem; display: inline-block;">
+            <%--        <img class="card-img-top" src=".../100px180/?text=Image cap" alt="Card image cap">--%>
+        <div class="card-body">
+            <h5 class="card-title">${patient.first_name} ${patient.last_name}</h5>
+        </div>
+        <ul class="list-group list-group-flush">
+            <li class="list-group-item">Date of birth: ${patient.date_of_birth}</li>
+            <li class="list-group-item">Doctor: ${userDAO.findUserNameById(patient.doctor_id)}</li>
+            <li class="list-group-item">Status: ${patient.status}</li>
+        </ul>
+        <div class="card-body">
+            <a href="/controller?command=getEditForm&editRole=patient&userId=${patient.id}" class="card-link">Edit</a>
+        </div>
+    </div>
 
-    <c:when test="${userRole == 'admin' }">
-        hello admin
-        <%--        <a href="controller?command=listOrders">--%>
-        <%--            --%>
-        <%--        </a> &nbsp;--%>
-    </c:when>
-
-
-    <c:when test="${userRole == 'doctor'}">
-        hello doctor
-        <%--        <a href="controller?command=listMenu">--%>
-        <%--            <fmt:message key="header_jspf.anchor.menu"/>--%>
-        <%--        </a> &nbsp;--%>
-    </c:when>
-</c:choose>
+</c:forEach>
 <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js"
         integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN"
         crossorigin="anonymous"></script>

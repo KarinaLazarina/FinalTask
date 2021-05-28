@@ -1,33 +1,32 @@
 package com.epam.FinalTask;
 
+import org.apache.log4j.Logger;
+
 import java.io.*;
 import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
 import javax.servlet.http.*;
 
 public class Controller extends HttpServlet {
+    private static final Logger log = Logger.getLogger(Controller.class);
+
     @Override
     public void doGet(HttpServletRequest request, HttpServletResponse response) throws IOException, ServletException {
-//        response.setContentType("text/html");
-        String commandName = request.getParameter("command");
+        log.debug("Controller starts: doGet");
 
-        // obtain command object by its name
+        String commandName = request.getParameter("command");
+        log.trace("Request parameter: command --> " + commandName);
+
         Command command = CommandContainer.getCommand(commandName);
-        // execute command and get forward address
+        log.trace("Obtained command --> " + command);
+
         String forward = command.execute(request, response);
-//        response.sendRedirect(forward);
-        // if the forward address is not null go to the address
+
+        log.debug("Controller finished, now go to forward address --> " + forward);
         if (forward != null) {
             RequestDispatcher disp = request.getRequestDispatcher(forward);
             disp.forward(request, response);
         }
-
-
-//        // Hello
-//        PrintWriter out = response.getWriter();
-//        out.println("<html><body>");
-//        out.println("<h1>" + message + "</h1>");
-//        out.println("</body></html>");
     }
 
     public void destroy() {
@@ -36,34 +35,17 @@ public class Controller extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
+        log.debug("Controller starts: doPost");
+
         String commandName = request.getParameter("command");
+        log.trace("Request parameter: command --> " + commandName);
 
-        // obtain command object by its name
         Command command = CommandContainer.getCommand(commandName);
-        // execute command and get forward address
-        String forward = command.execute(request, response);
-        response.sendRedirect(request.getContextPath() + forward);
+        log.trace("Obtained command --> " + command);
 
-        // if the forward address is not null go to the address
-//        if (forward != null) {
-//            RequestDispatcher disp = request.getRequestDispatcher(forward);
-//            disp.forward(request, response);
-//        }
+        String redirect = command.execute(request, response);
+
+        log.debug("Controller finished, now go to redirect address --> " + redirect);
+        response.sendRedirect(request.getContextPath() + redirect);
     }
-//
-//    private String doRequest(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-//        String commandName = request.getParameter("command");
-//
-//        // obtain command object by its name
-//        Command command = CommandContainer.getCommand(commandName);
-//        // execute command and get forward address
-//        String forward = command.execute(request, response);
-////        response.sendRedirect(forward);
-//        return forward;
-//        // if the forward address is not null go to the address
-////        if (forward != null) {
-////            RequestDispatcher disp = request.getRequestDispatcher(forward);
-////            disp.forward(request, response);
-////        }
-//    }
 }

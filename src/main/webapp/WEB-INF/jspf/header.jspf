@@ -1,6 +1,5 @@
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt" %>
-<%--<jsp:useBean id="specializationDAO" class="com.epam.FinalTask.db.dao.SpecializationDAO" scope="session"/>--%>
 
 <nav class="navbar navbar-expand-lg navbar-light bg-light">
     <a class="navbar-brand" href="/controller?command=showHomePage">Hospital</a>
@@ -23,8 +22,8 @@
                         </a>
                         <div class="dropdown-menu" aria-labelledby="navbarDropdown">
                             <a class="dropdown-item" href="/controller?command=getUsers&userName=doctor">All specializations</a>
-                            <c:forEach var="specialization" items="${specializationDAO.specializations}">
-                                <a class="dropdown-item" href="/controller?command=getUsers&userName=doctor&specialization=${specialization.value}">${specialization.value}</a>
+                            <c:forEach var="specialization" items="${specializations}">
+                                <a class="dropdown-item" href="/controller?command=getUsers&userName=doctor&specialization=${specialization.key}">${specialization.value}</a>
                             </c:forEach>
                             <div class="dropdown-divider"></div>
                             <a class="dropdown-item" href="/controller?command=getForm&addRole=doctor">Add new doctor</a>
@@ -45,14 +44,14 @@
             </c:choose>
 
             <li class="nav-item dropdown">
-                <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown"
+                <a class="nav-link dropdown-toggle" id="navbarDropdown" role="button" data-toggle="dropdown"
                    aria-haspopup="true" aria-expanded="false">
                     Patients
                 </a>
                 <div class="dropdown-menu" aria-labelledby="navbarDropdown">
-                    <a class="dropdown-item" href="#">Show patients</a>
+                    <a class="dropdown-item" href="/controller?command=getUsers&userName=patient">Show patients</a>
                     <div class="dropdown-divider"></div>
-                    <a class="dropdown-item" href="#">Add new patients</a>
+                    <a class="dropdown-item" href="/controller?command=getForm&addRole=patient">Add new patients</a>
                 </div>
             </li>
         </ul>

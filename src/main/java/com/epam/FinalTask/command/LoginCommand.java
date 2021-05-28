@@ -1,61 +1,58 @@
 package com.epam.FinalTask.command;
 
 import com.epam.FinalTask.Command;
+import com.epam.FinalTask.Controller;
+import com.epam.FinalTask.db.dao.SpecializationDAO;
 import com.epam.FinalTask.db.dao.UserDao;
 import com.epam.FinalTask.db.entity.Role;
 import com.epam.FinalTask.db.entity.User;
+import org.apache.log4j.Logger;
 
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import java.io.IOException;
+import java.util.Map;
 
 public class LoginCommand implements Command {
-//    private static final String pathToDoctorPage = "/WEB-INF/admin/listOfUsers.jsp";
+    private static final Logger log = Logger.getLogger(LoginCommand.class);
+
     private static final String pathToHomePage = "/controller?command=showHomePage";
-//    private static final String pathToNursePage = "/WEB-INF/admin/listOfUsers.jsp";
-    private static final String pathToErrorPage = "/WEB-INF/errorPage.jsp";
+    private static final String pathToErrorPage = "/controller?command=showErrorPage";
 
     @Override
     public String execute(HttpServletRequest request, HttpServletResponse response)
             throws IOException, ServletException {
+        log.debug("Command starts");
         HttpSession session = request.getSession();
 
-        // obtain login and password from the request
         String login = request.getParameter("login");
+        log.trace("Request parameter: login --> " + login);
+
         String password = request.getParameter("password");
 
-        // error handler
-//        String errorMessage = null;
-//        String forward = Path.PAGE__ERROR_PAGE;
-
         if (login == null || password == null || login.isEmpty() || password.isEmpty()) {
-            System.out.println("password or login is null");
-//            errorMessage = "Login/password cannot be empty";
-//            request.setAttribute("errorMessage", errorMessage);
-            return pathToErrorPage;
+            request.setAttribute("errorMessage", "Login/password cannot be empty");
+            log.error("errorMessage --> Password or login is null");
+            return pathToErrorPage + "&errorMessage=Login/password cannot be empty";
         }
 
         User user = new UserDao().findUserByLogin(login);
+        log.trace("Found in DB: user --> " + user);
+
         if (user == null || !password.equals(user.getPassword())) {
-            System.out.println("wrong user");
-//            errorMessage = "Cannot find user with such login/password";
+            String errorMessage = "Cannot find user with such login/password";
 //            request.setAttribute("errorMessage", errorMessage);
-            return pathToErrorPage;
+            log.error("errorMessage --> " + errorMessage);
+            return pathToErrorPage + "&errorMessage=" + errorMessage;
         } else {
             configureSession(session, user);
             Role userRole = Role.fromValue(user.getRole_id());
-            return pathToHomePage;
+            log.trace("userRole --> " + userRole);
 
-//            if (userRole == Role.ADMIN)
-//                return pathToAdminPage;
-//
-//            if (userRole == Role.DOCTOR)
-//                return pathToDoctorPage;
-//
-//            if (userRole == Role.NURSE)
-//                return pathToNursePage;
+            log.info("User " + user + " logged as " + userRole.toString().toLowerCase());
+            return pathToHomePage;
 
             // work with i18n
 //            String userLocaleName = user.getLocaleName();
@@ -74,6 +71,15 @@ public class LoginCommand implements Command {
 
     private void configureSession(HttpSession session, User user){
         session.setAttribute("user", user);
-        session.setAttribute("userRole", Role.fromValue(user.getRole_id()).toString().toLowerCase());
+        log.trace("Set the session attribute: user --> " + user);
+
+        String userRole = Role.fromValue(user.getRole_id()).toString().toLowerCase();
+        session.setAttribute("userRole", userRole);
+        log.trace("Set the session attribute: userRole --> " + userRole);
+
+        Map<Integer, String> specializations = new SpecializationDAO().getSpecializations();
+        session.setAttribute("specializations", specializations);
+        log.trace("Set the session attribute: specializations --> " + specializations);
+
     }
 }
